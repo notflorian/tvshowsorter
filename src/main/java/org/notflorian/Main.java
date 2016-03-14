@@ -22,7 +22,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             // Check args
-            if (args.length != 2 || StringUtils.isEmpty(args[0]) || StringUtils.isEmpty(args[0])) {
+            if (args.length != 2 || StringUtils.isEmpty(args[0]) || StringUtils.isEmpty(args[1])) {
                 throw new IOException("usage ./tvshowsorter <inputDir> <showsRootDir>");
             }
 
