@@ -387,4 +387,26 @@ public class ShowInfosTest {
         assertEquals("rarbg", infos.getSite());
         assertEquals("mp4", infos.getFileType());
     }
+
+    @Test
+    public void test_Daredevil() {
+        String fileName = "marvels.daredevil.s02e01.webrip.x264-fum.mp4";
+
+        ShowInfos infos = new ShowInfos(fileName);
+
+        assertEquals(fileName, infos.getFileName());
+        assertEquals("marvels daredevil", infos.getName());
+        assertNull(infos.getYear());
+        assertEquals("02", infos.getSeason());
+        assertEquals("01", infos.getEpisode());
+        assertNull( infos.getVersion());
+        assertNull(infos.getTitle());
+        assertNull(infos.getDefinition());
+        assertNull(infos.getLanguage());
+        assertEquals("WEBRip", infos.getSource());
+        assertEquals("x264", infos.getVideoCodec());
+        assertEquals("fum", infos.getTeam());
+        assertNull(infos.getSite());
+        assertEquals("mp4", infos.getFileType());
+    }
 }

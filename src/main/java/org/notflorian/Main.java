@@ -1,6 +1,7 @@
 package org.notflorian;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 
@@ -18,7 +19,8 @@ public class Main {
 
     public static final String SEASON = "Saison";
 
-    public static final String[] VIDEO_EXTENSIONS = new String[]{".mp4", ".avi", ".mkv", ".wmv", ".mpg", ".mov"};
+    public static final String[] VIDEO_FILE_TYPE = new String[]{"mp4", "avi", "mkv", "wmv", "mpg", "mov"};
+    public static final String[] SUBTITLES_FILE_TYPE = new String[]{"srt"};
     public static final String PREFIX_ACTIVE = "_";
 
 
@@ -34,10 +36,14 @@ public class Main {
                 throw new IOException("Wrong input directory");
             }
 
+            System.out.println("Input directory :" + inputDirectory.getAbsolutePath());
+
             File showsRootDirectory = new File(args[1]);
             if (!showsRootDirectory.exists() || !showsRootDirectory.isDirectory()) {
                 throw new IOException("Wrong shows root directory");
             }
+
+            System.out.println("Shows root directory" + showsRootDirectory.getAbsolutePath());
 
             // List files and directory in the input dir
             File[] inputFiles = inputDirectory.listFiles();
@@ -47,22 +53,34 @@ public class Main {
                         if (!"synoscheduler".equals(file.getName())) {
 
                             // If the show file is in a subdirectory, rename it to the parent directory name and move it
+                            int nbVideoFiles = 0;
+                            for (Iterator<File> it = FileUtils.iterateFiles(file, VIDEO_FILE_TYPE, false); it.hasNext(); ) {
+                                it.next();
+                                nbVideoFiles++;
 
-                            for (Iterator<File> it = FileUtils.iterateFiles(file, VIDEO_EXTENSIONS, false); it.hasNext(); ) {
+                            }
+
+                            for (Iterator<File> it = FileUtils.iterateFiles(file, ArrayUtils.addAll(VIDEO_FILE_TYPE, SUBTITLES_FILE_TYPE), false); it.hasNext(); ) {
                                 File showFile = it.next();
-                                File renamedShowFile = new File(file.getCanonicalPath() + showFile.getName().substring(showFile.getName().lastIndexOf('.')));
-                                if (showFile.renameTo(renamedShowFile)) {
-                                    System.out.println("Renamed file " + showFile.getName() + " to " + renamedShowFile.getName());
 
-                                } else {
-                                    throw new IOException("Failed to rename file " + showFile.getName());
+                                if (nbVideoFiles == 1) {
+                                    File renamedShowFile = new File(file, file.getName() + showFile.getName().substring(showFile.getName().lastIndexOf('.')));
+                                    if (showFile.renameTo(renamedShowFile)) {
+                                        System.out.println("Renamed file " + showFile.getName() + " to " + renamedShowFile.getName());
+                                        showFile = renamedShowFile;
+
+                                    } else {
+                                        throw new IOException("Failed to rename file " + showFile.getName());
+                                    }
                                 }
 
-                                processFile(showsRootDirectory, renamedShowFile);
+                                processFile(showsRootDirectory, showFile);
                             }
 
 
-                            FileUtils.deleteDirectory(file);
+                            if (nbVideoFiles > 0) {
+                                FileUtils.deleteDirectory(file);
+                            }
                         }
 
                     } else if (isVideoFile(file)) {
@@ -79,7 +97,7 @@ public class Main {
     public static boolean isVideoFile(File file) {
         String name = file.getName().toLowerCase();
 
-        return file.isFile() && Arrays.asList(VIDEO_EXTENSIONS).contains(name.substring(name.lastIndexOf('.')));
+        return file.isFile() && Arrays.asList(VIDEO_FILE_TYPE).contains(name.substring(name.lastIndexOf('.') + 1));
     }
 
 
@@ -96,6 +114,8 @@ public class Main {
                 if (showsDirName.equalsIgnoreCase(showInfos.getName()) || showsDirName.equalsIgnoreCase(PREFIX_ACTIVE + showInfos.getName())) {
                     showDir = showsDirs[i];
                 }
+
+                i++;
             }
         }
 
