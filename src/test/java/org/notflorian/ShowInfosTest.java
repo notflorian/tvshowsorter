@@ -365,4 +365,26 @@ public class ShowInfosTest {
         assertNull(infos.getSite());
         assertEquals("mp4", infos.getFileType());
     }
+
+    @Test
+    public void test_AgentsOfSHIELD() {
+        String fileName = "Marvels.Agents.of.S.H.I.E.L.D.S03E12.HDTV.x264-KILLERS[rarbg].mp4";
+
+        ShowInfos infos = new ShowInfos(fileName);
+
+        assertEquals(fileName, infos.getFileName());
+        assertEquals("Marvels Agents of S H I E L D", infos.getName());
+        assertNull(infos.getYear());
+        assertEquals("03", infos.getSeason());
+        assertEquals("12", infos.getEpisode());
+        assertNull( infos.getVersion());
+        assertNull(infos.getTitle());
+        assertNull(infos.getDefinition());
+        assertNull(infos.getLanguage());
+        assertEquals("HDTV", infos.getSource());
+        assertEquals("x264", infos.getVideoCodec());
+        assertEquals("KILLERS", infos.getTeam());
+        assertEquals("rarbg", infos.getSite());
+        assertEquals("mp4", infos.getFileType());
+    }
 }

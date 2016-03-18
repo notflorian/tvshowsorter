@@ -58,14 +58,14 @@ public class ShowInfos {
 
         // Video Codec
         StringBuilder videoCodec = new StringBuilder();
-        tmpFileName = findWords(tmpFileName, VIDEO_CODECS, videoCodec);
+        tmpFileName = findWholeWord(tmpFileName, VIDEO_CODECS, videoCodec);
         if (videoCodec.length() > 0) {
             this.videoCodec = videoCodec.toString();
         }
 
         // Audio Codec
         StringBuilder audioCodec = new StringBuilder();
-        tmpFileName = findWords(tmpFileName, AUDIO_CODECS, audioCodec);
+        tmpFileName = findWholeWord(tmpFileName, AUDIO_CODECS, audioCodec);
         if (audioCodec.length() > 0) {
             this.audioCodec = audioCodec.toString();
         }
@@ -74,28 +74,28 @@ public class ShowInfos {
 
         // Version
         StringBuilder version = new StringBuilder();
-        tmpFileName = findWords(tmpFileName, VERSIONS, version);
+        tmpFileName = findWholeWord(tmpFileName, VERSIONS, version);
         if (version.length() > 0) {
             this.version = version.toString();
         }
 
         // Language
         StringBuilder language = new StringBuilder();
-        tmpFileName = findWords(tmpFileName, LANGUAGES, language);
+        tmpFileName = findWholeWord(tmpFileName, LANGUAGES, language);
         if (language.length() > 0) {
             this.language = language.toString();
         }
 
         // Source
         StringBuilder source = new StringBuilder();
-        tmpFileName = findWords(tmpFileName, SOURCES, source);
+        tmpFileName = findWholeWord(tmpFileName, SOURCES, source);
         if (source.length() > 0) {
             this.source = source.toString();
         }
 
         // Definition
         StringBuilder definition = new StringBuilder();
-        tmpFileName = findWords(tmpFileName, DEFINITIONS, definition);
+        tmpFileName = findWholeWord(tmpFileName, DEFINITIONS, definition);
         if (definition.length() > 0) {
             this.definition = definition.toString();
         }
@@ -330,22 +330,37 @@ public class ShowInfos {
                 '}';
     }
 
-    private String findWords(String fileName, String[] words, StringBuilder field) {
+    private String findWholeWord(String fileName, String[] words, StringBuilder field) {
         String tmpFileName = fileName;
 
         for (String word : words) {
             if (StringUtils.containsIgnoreCase(tmpFileName, word)) {
-                if (field.length() > 0) {
-                    field.append(' ');
-                }
-
-                field.append(word);
 
                 int index = StringUtils.indexOfIgnoreCase(tmpFileName, word);
-                tmpFileName = tmpFileName.replace(tmpFileName.substring(index, index + word.length()), "");
+
+                // Check char before the found word
+                if (index == 0 || (index > 0 && isCharWordSeparator(tmpFileName.charAt(index - 1)))) {
+
+                    // Check char after found word
+                    if (index + word.length() == tmpFileName.length() || isCharWordSeparator(tmpFileName.charAt(index + word.length()))) {
+                        if (field.length() > 0) {
+                            field.append(' ');
+                        }
+
+                        field.append(word);
+
+                        tmpFileName = tmpFileName.replace(tmpFileName.substring(index, index + word.length()), "");
+                    }
+                }
             }
         }
 
         return tmpFileName;
     }
+
+    private boolean isCharWordSeparator(char c) {
+        return c == ' '  ||  c == '.' || c == '-' || c == '_' || c == '[' || c == ']'  || c == '('  || c == ')';
+    }
+
+
 }
