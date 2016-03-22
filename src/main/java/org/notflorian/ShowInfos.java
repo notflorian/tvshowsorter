@@ -17,7 +17,7 @@ public class ShowInfos {
 
     public static final String[] DEFINITIONS = {"144p", "240p", "360p", "480p", "720p", "1080p", "nHD"};
 
-    public static final String[] SOURCES = {"REAL HDTV", "HDTV", "WEBRip", "WEB-DL", "DVDRip", "BDRip", "DVDScr", "PPVRip", "R5", "TS", "CAM", "DVD-R"};
+    public static final String[] SOURCES = {"REAL HDTV", "HDTV", "WEBRip", "WEB-DL", "DVDRip", "BDRip", "BRRip", "DVDScr", "PPVRip", "R5", "TS", "CAM", "DVD-R"};
 
     public static final Pattern NUMBER_PATTERN = Pattern.compile("[Ss](\\d{2})[Ee](\\d{2})[Ee]?(\\d{2})?");
 
