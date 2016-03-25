@@ -7,19 +7,19 @@ import java.util.regex.Pattern;
 
 public class ShowInfos {
 
-    public static final String[] VERSIONS = new String[]{"FINAL", "REPACK", "REAL PROPER", "PROPER"};
+    private static final String[] VERSIONS = new String[]{"FINAL", "REPACK", "REAL PROPER", "PROPER"};
 
-    public static final String[] LANGUAGES = new String[]{"FASTSUB", "FRENCH SUBFORCED", "SUBFORCED", "VOSTFR", "TRUEFRENCH", "VFF", "VFQ", "VFI", "VO", "VF", "VOST"};
+    private static final String[] LANGUAGES = new String[]{"FASTSUB", "FRENCH SUBFORCED", "SUBFORCED", "VOSTFR", "TRUEFRENCH", "VFF", "VFQ", "VFI", "VO", "VF", "VOST"};
 
-    public static final String[] VIDEO_CODECS = new String[]{"x264", "H.264", "H264", "XviD", "DviX"};
+    private static final String[] VIDEO_CODECS = new String[]{"x264", "H.264", "H264", "XviD", "DviX"};
 
-    public static final String[] AUDIO_CODECS = new String[]{"AAC2.0", "AAC", "DD5.1", "AC3"};
+    private static final String[] AUDIO_CODECS = new String[]{"AAC2.0", "AAC", "DD5.1", "AC3"};
 
-    public static final String[] DEFINITIONS = {"144p", "240p", "360p", "480p", "720p", "1080p", "nHD"};
+    private static final String[] DEFINITIONS = {"144p", "240p", "360p", "480p", "720p", "1080p", "nHD"};
 
-    public static final String[] SOURCES = {"REAL HDTV", "HDTV", "WEBRip", "WEB-DL", "DVDRip", "BDRip", "BRRip", "DVDScr", "PPVRip", "R5", "TS", "CAM", "DVD-R"};
+    private static final String[] SOURCES = {"REAL HDTV", "HDTV", "WEBRip", "WEB-DL", "DVDRip", "BDRip", "BRRip", "DVDScr", "PPVRip", "R5", "TS", "CAM", "DVD-R"};
 
-    public static final Pattern NUMBER_PATTERN = Pattern.compile("[Ss](\\d{2})[Ee](\\d{2})[Ee]?(\\d{2})?");
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("[Ss](\\d{2})[Ee](\\d{2})[Ee]?(\\d{2})?");
 
 
     private String fileName;
@@ -27,13 +27,13 @@ public class ShowInfos {
     private String year;
     private String season;
     private String episode;
-    private String version; // PROPER or FINAL PROPER or REAL PROPER or REPACK
+    private String version;
     private String title;
-    private String language; // FASTSUB VOSTFR or VOSTFR
-    private String definition; // 720p
-    private String source; // HDTV or WEBRip or WEB-DL
-    private String videoCodec; // x264 or XviD or H 264
-    private String audioCodec; // AAC or AAC2.0 or DD5.1
+    private String language;
+    private String definition;
+    private String source;
+    private String videoCodec;
+    private String audioCodec;
     private String team;
     private String site;
     private String fileType;
@@ -57,68 +57,68 @@ public class ShowInfos {
         }
 
         // Video Codec
-        StringBuilder videoCodec = new StringBuilder();
-        tmpFileName = findWholeWord(tmpFileName, VIDEO_CODECS, videoCodec);
-        if (videoCodec.length() > 0) {
-            this.videoCodec = videoCodec.toString();
+        StringBuilder videoCodecBuilder = new StringBuilder();
+        tmpFileName = findWholeWord(tmpFileName, VIDEO_CODECS, videoCodecBuilder);
+        if (videoCodecBuilder.length() > 0) {
+            videoCodec = videoCodecBuilder.toString();
         }
 
         // Audio Codec
-        StringBuilder audioCodec = new StringBuilder();
-        tmpFileName = findWholeWord(tmpFileName, AUDIO_CODECS, audioCodec);
-        if (audioCodec.length() > 0) {
-            this.audioCodec = audioCodec.toString();
+        StringBuilder audioCodecbuilder = new StringBuilder();
+        tmpFileName = findWholeWord(tmpFileName, AUDIO_CODECS, audioCodecbuilder);
+        if (audioCodecbuilder.length() > 0) {
+            audioCodec = audioCodecbuilder.toString();
         }
 
         tmpFileName = tmpFileName.replace('.', ' ');
 
         // Version
-        StringBuilder version = new StringBuilder();
-        tmpFileName = findWholeWord(tmpFileName, VERSIONS, version);
-        if (version.length() > 0) {
-            this.version = version.toString();
+        StringBuilder versionBuilder = new StringBuilder();
+        tmpFileName = findWholeWord(tmpFileName, VERSIONS, versionBuilder);
+        if (versionBuilder.length() > 0) {
+            version = versionBuilder.toString();
         }
 
         // Language
-        StringBuilder language = new StringBuilder();
-        tmpFileName = findWholeWord(tmpFileName, LANGUAGES, language);
-        if (language.length() > 0) {
-            this.language = language.toString();
+        StringBuilder languageBuilder = new StringBuilder();
+        tmpFileName = findWholeWord(tmpFileName, LANGUAGES, languageBuilder);
+        if (languageBuilder.length() > 0) {
+            language = languageBuilder.toString();
         }
 
         // Source
-        StringBuilder source = new StringBuilder();
-        tmpFileName = findWholeWord(tmpFileName, SOURCES, source);
-        if (source.length() > 0) {
-            this.source = source.toString();
+        StringBuilder sourceBuilder = new StringBuilder();
+        tmpFileName = findWholeWord(tmpFileName, SOURCES, sourceBuilder);
+        if (sourceBuilder.length() > 0) {
+            source = sourceBuilder.toString();
         }
 
         // Definition
-        StringBuilder definition = new StringBuilder();
-        tmpFileName = findWholeWord(tmpFileName, DEFINITIONS, definition);
-        if (definition.length() > 0) {
-            this.definition = definition.toString();
+        StringBuilder definitionBuilder = new StringBuilder();
+        tmpFileName = findWholeWord(tmpFileName, DEFINITIONS, definitionBuilder);
+        if (definitionBuilder.length() > 0) {
+            definition = definitionBuilder.toString();
         }
 
         // Team
-        int teamIndex = tmpFileName.lastIndexOf("-");
+        int teamIndex = tmpFileName.lastIndexOf('-');
         if (teamIndex != -1) {
             team = tmpFileName.substring(teamIndex + 1, tmpFileName.length());
             tmpFileName = tmpFileName.replace("-" + team, "");
         }
 
-        StringBuilder name = new StringBuilder();
-        StringBuilder year = new StringBuilder();
-        StringBuilder season = new StringBuilder();
-        StringBuilder episode = new StringBuilder();
-        StringBuilder title = new StringBuilder();
+        StringBuilder nameBuilder = new StringBuilder();
+        StringBuilder yearBuilder = new StringBuilder();
+        StringBuilder seasonBuilder = new StringBuilder();
+        StringBuilder episodeBuilder = new StringBuilder();
+        StringBuilder titleBuilder = new StringBuilder();
 
         // Split file name on whitespaces
         String[] infos = tmpFileName.split("\\s");
         for (String info : infos) {
             if (StringUtils.isNotEmpty(info)) {
 
-                if (season.length() == 0) {
+                if (seasonBuilder.length() == 0) {
 
                     Matcher numberMatcher = NUMBER_PATTERN.matcher(info);
 
@@ -126,64 +126,64 @@ public class ShowInfos {
 
                         if (!info.matches("\\d{4}")) {
                             // Name
-                            if (name.length() != 0) {
-                                name.append(' ');
+                            if (nameBuilder.length() != 0) {
+                                nameBuilder.append(' ');
                             }
 
-                            name.append(info);
+                            nameBuilder.append(info);
 
                         } else {
                             // Year (ex: 2016)
-                            year.append(info);
+                            yearBuilder.append(info);
                         }
 
                     } else {
                         // Season & Episode (ex: S01E01E02)
-                        season.append(numberMatcher.group(1));
+                        seasonBuilder.append(numberMatcher.group(1));
 
                         for (int i = 2; i <= numberMatcher.groupCount(); i++) {
                             String group = numberMatcher.group(i);
 
                             if (group != null) {
-                                if (episode.length() != 0) {
-                                    episode.append(' ');
+                                if (episodeBuilder.length() != 0) {
+                                    episodeBuilder.append(' ');
                                 }
 
-                                episode.append(group);
+                                episodeBuilder.append(group);
                             }
                         }
                     }
 
                 } else {
                     // Title
-                    if (title.length() != 0) {
-                        title.append(' ');
+                    if (titleBuilder.length() != 0) {
+                        titleBuilder.append(' ');
                     }
 
-                    title.append(info);
+                    titleBuilder.append(info);
 
                 }
             }
         }
 
-        if (name.length() > 0) {
-            this.name = name.toString();
+        if (nameBuilder.length() > 0) {
+            this.name = nameBuilder.toString();
         }
 
-        if (year.length() > 0) {
-            this.year = year.toString();
+        if (yearBuilder.length() > 0) {
+            this.year = yearBuilder.toString();
         }
 
-        if (season.length() > 0) {
-            this.season = season.toString();
+        if (seasonBuilder.length() > 0) {
+            this.season = seasonBuilder.toString();
         }
 
-        if (episode.length() > 0) {
-            this.episode = episode.toString();
+        if (episodeBuilder.length() > 0) {
+            this.episode = episodeBuilder.toString();
         }
 
-        if (title.length() > 0) {
-            this.title = title.toString();
+        if (titleBuilder.length() > 0) {
+            this.title = titleBuilder.toString();
         }
 
     }
@@ -330,7 +330,7 @@ public class ShowInfos {
                 '}';
     }
 
-    private String findWholeWord(String fileName, String[] words, StringBuilder field) {
+    private static String findWholeWord(String fileName, String[] words, StringBuilder field) {
         String tmpFileName = fileName;
 
         for (String word : words) {
@@ -338,19 +338,17 @@ public class ShowInfos {
 
                 int index = StringUtils.indexOfIgnoreCase(tmpFileName, word);
 
-                // Check char before the found word
-                if (index == 0 || (index > 0 && isCharWordSeparator(tmpFileName.charAt(index - 1)))) {
+                // Check char before and after the found word
+                if ((index == 0 || (index > 0 && isCharWordSeparator(tmpFileName.charAt(index - 1)))) &&
+                        (index + word.length() == tmpFileName.length() || isCharWordSeparator(tmpFileName.charAt(index + word.length())))) {
 
-                    // Check char after found word
-                    if (index + word.length() == tmpFileName.length() || isCharWordSeparator(tmpFileName.charAt(index + word.length()))) {
-                        if (field.length() > 0) {
-                            field.append(' ');
-                        }
-
-                        field.append(word);
-
-                        tmpFileName = tmpFileName.replace(tmpFileName.substring(index, index + word.length()), "");
+                    if (field.length() > 0) {
+                        field.append(' ');
                     }
+
+                    field.append(word);
+
+                    tmpFileName = tmpFileName.replace(tmpFileName.substring(index, index + word.length()), "");
                 }
             }
         }
@@ -358,7 +356,7 @@ public class ShowInfos {
         return tmpFileName;
     }
 
-    private boolean isCharWordSeparator(char c) {
+    private static boolean isCharWordSeparator(char c) {
         return c == ' '  ||  c == '.' || c == '-' || c == '_' || c == '[' || c == ']'  || c == '('  || c == ')';
     }
 
