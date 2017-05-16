@@ -24,7 +24,7 @@ public final class Main {
     private static final String[] VIDEO_FILE_TYPE = new String[]{"mp4", "avi", "mkv", "wmv", "mpg", "mov"};
     private static final String[] SUBTITLES_FILE_TYPE = new String[]{"srt"};
 
-    private static final List<String> IGNORED_VIDEO_FILES = Arrays.asList("rarbg.com.mp4", "RARBG.mp4");
+    private static final List<String> IGNORED_VIDEO_FILES = Arrays.asList("rarbg.com.mp4", "rarbg.mp4");
 
     private static final Logger logger = LogManager.getLogger(Main.class);
 
