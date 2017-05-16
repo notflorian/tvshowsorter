@@ -19,7 +19,7 @@ public class ShowInfos {
 
     private static final String[] SOURCES = {"REAL HDTV", "HDTV", "WEBRip", "WEB-DL", "DVDRip", "BDRip", "BRRip", "DVDScr", "PPVRip", "R5", "TS", "CAM", "DVD-R"};
 
-    private static final Pattern NUMBER_PATTERN = Pattern.compile("[Ss](\\d{2})[Ee](\\d{2})[Ee]?(\\d{2})?");
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("[Ss](\\d+)[Ee](\\d+)[Ee]?(\\d+)?");
 
 
     private String fileName;
