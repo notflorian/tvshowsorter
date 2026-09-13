@@ -138,9 +138,12 @@ public final class Main {
         }
 
 
-        if (!error && nbVideoFiles > 0 && processedFiles == nbVideoFiles) {
-            logger.info("Delete directory " + file.getCanonicalPath());
-            FileUtils.deleteDirectory(file);
+        if (!error && nbVideoFiles > 0) {
+            File[] remaining = file.listFiles();
+            if (remaining == null || remaining.length == 0) {
+                logger.info("Delete directory " + file.getCanonicalPath());
+                FileUtils.deleteDirectory(file);
+            }
         }
 
         return error;
